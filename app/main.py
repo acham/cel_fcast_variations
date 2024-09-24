@@ -36,6 +36,7 @@ async def root():
 
 @fast_app.get("/forecast_range")
 async def get_forecast_range(fc_spec: ForecastSpec, db: Session = Depends(get_db)):
+    """ Get the min and max temperatures for a provided forecast specification """
     try:
         min_temp_fc, max_temp_fc = crud.get_fc_range(db, fc_spec)
     except Exception as e:
@@ -48,6 +49,10 @@ async def get_forecast_range(fc_spec: ForecastSpec, db: Session = Depends(get_db
     }
 
 async def retrieve_new_forecasts():
+    """ 
+    Get metadata from the NWS for the provided coordinates and retrieve 
+    and store hourly forecast points for up to 72 hours at regular interval.
+    """
     nws_header = {
         "User-Agent": settings.nws_session_id
     }
