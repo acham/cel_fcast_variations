@@ -54,6 +54,9 @@ to 23
 Example: ``` { "latitude": 37.927877, "longitude": -122.579370,
 "fc_date": "2024-09-25", "hour_of_day": 3 } ```
 
+The payload for this endpoint includes all fields in the database
+for the min and max temperature points, including NWS metadata.
+
 The backing CRUD operation for this endpoint retrieves all of the
 forecast points that correspond to this specification from the
 database and then finds the minimum and maximum temperatures in the
