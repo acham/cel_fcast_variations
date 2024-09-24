@@ -47,12 +47,22 @@ larger-scale forecast data, a dedicated time series database such as
 TimescaleDB would be a more adequate choice.
 
 The API endpoint to retrieve a forecast range requires a JSON request
-body with the following fields: - latitude: float - longitude: float -
-fc_date: date string in format YYYY-MM-DD - hour of day: int, from 0
+body with the following fields: 
+  - latitude: float 
+  - longitude: float 
+  - fc_date: date string in format YYYY-MM-DD 
+  - hour of day: int, from 0
 to 23
 
-Example: ``` { "latitude": 37.927877, "longitude": -122.579370,
-"fc_date": "2024-09-25", "hour_of_day": 3 } ```
+Example: 
+``` 
+{ 
+    "latitude": 37.927877, 
+    "longitude": -122.579370,
+    "fc_date": "2024-09-25", 
+    "hour_of_day": 3 
+} 
+```
 
 The payload for this endpoint includes all fields in the database
 for the min and max temperature points, including NWS metadata.
