@@ -39,7 +39,9 @@ the API, and `db/` implements the database layer, including the
 database schema and CRUD operations to write and retrieve forecast
 points.
 
-## Discussion SQLite was chosen due to its simplicity and its ability
+## Discussion 
+
+SQLite was chosen due to its simplicity and its ability
 to use local storage, which is a requirement for this project. For
 larger-scale forecast data, a dedicated time series database such as
 TimescaleDB would be a more adequate choice.
