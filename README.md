@@ -1,10 +1,12 @@
-# CEL Exercise: Forecast Variations
+# National Weather Service Forecast Variations
 
-## Overview
+This code illustrates a scenario in which both a background
+task and a client-facing API can be provided in a single container
+supported by FastAPI.
 
-This application queries hourly forecast data for coordinates provided
+A background task queries hourly forecast data for coordinates provided
 by the user at regular intervals, stores them in a local database, and
-provides an API to query this data.
+the main application provides an API to query this data.
 
 The application code is in `/app`, and it consists of a FastAPI
 application that uses SQLAlchemy to interface with a SQLite instance.
@@ -24,25 +26,10 @@ $ docker build -t fcast_variations .
 ```
 
 The script `docker_run.sh` runs the container, mapping both the
-environment file and the database file into the container.
-
-## Implementation
-
-`main.py` defines the API endpoints, and it starts an optional
-asynchronous task to collect forecast points from the National Weather
-Service's public API at regular intervals. This asynchronous task is
-defined in function `retrieve_new_forecasts`.
-
-`config.py` defines a configuration that is mainly obtained from the
-environment variables.  `model/` contains a data model that is used by
-the API, and `db/` implements the database layer, including the
-database schema and CRUD operations to write and retrieve forecast
-points.
-
-## Discussion 
+environment file and the database volume into the container.
 
 SQLite was chosen due to its simplicity and its ability
-to use local storage, which is a requirement for this project. For
+to use local storage. For
 larger-scale forecast data, a dedicated time series database such as
 TimescaleDB would be a more adequate choice.
 
@@ -51,8 +38,7 @@ body with the following fields:
   - latitude: float 
   - longitude: float 
   - fc_date: date string in format YYYY-MM-DD 
-  - hour of day: int, from 0
-to 23
+  - hour of day: int, from 0 to 23
 
 Example: 
 ``` 
@@ -67,16 +53,5 @@ Example:
 The payload for this endpoint includes all fields in the database
 for the min and max temperature points, including NWS metadata.
 
-The backing CRUD operation for this endpoint retrieves all of the
-forecast points that correspond to this specification from the
-database and then finds the minimum and maximum temperatures in the
-range. With a time series database, these minimum and maximum values
-can be better discovered through the database query itself. Here,
-there is an assumption that each forecast specification does not
-correspond to many data points, so it is acceptable to transfer all
-the corresponding points and let the Python code handle the filtering.
-
-There is also an assumption that older records are removed from the
-database separately.  With a time series database, a lifetime can be
-specified for each point, allowing the database to automatically clean
-old data.
+For a long-running application, older records should be removed from the
+database separately.
